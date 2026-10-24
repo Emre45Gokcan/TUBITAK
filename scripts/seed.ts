@@ -4,13 +4,19 @@
  *
  *   npm run db:seed              # admin only (use this in production)
  *   npm run db:seed -- --demo    # plus demo teachers, students and classes (local only)
+ *
+ * On a database that isn't on this computer, --demo is refused and the admin password
+ * must be long and new (see src/lib/seed-safety.ts).
  */
 import "./load-env";
+import { readFileSync } from "node:fs";
+import { parse } from "dotenv";
 import { eq } from "drizzle-orm";
 import { db, pool } from "@/db";
 import { type UserRole, type UserStatus, classroom, enrollment, user } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { generateJoinCode } from "@/lib/join-code";
+import { DEMO_PASSWORD, seedSafetyProblem } from "@/lib/seed-safety";
 
 type SeedUser = { name: string; email: string; password: string; role: UserRole; status: UserStatus };
 
@@ -39,8 +45,17 @@ async function ensureUser(seed: SeedUser): Promise<string> {
   return created.id;
 }
 
+/** The local development admin password, so a production admin can't reuse it. */
+function localAdminPassword(): string | undefined {
+  try {
+    return parse(readFileSync(".env.local")).ADMIN_PASSWORD;
+  } catch {
+    return undefined;
+  }
+}
+
 async function seedDemo() {
-  const password = "demo-sifre-123";
+  const password = DEMO_PASSWORD;
   const teacherId = await ensureUser({
     name: "Ayşe Yılmaz", email: "ayse@example.com", password, role: "teacher", status: "active",
   });
@@ -78,6 +93,13 @@ async function main() {
     throw new Error("ADMIN_EMAIL ve ADMIN_PASSWORD ortam değişkenlerini ayarlayın.");
   }
   if (ADMIN_PASSWORD.length < 8) throw new Error("ADMIN_PASSWORD en az 8 karakter olmalı.");
+  const problem = seedSafetyProblem({
+    databaseUrl: process.env.DATABASE_URL,
+    demo: process.argv.includes("--demo"),
+    adminPassword: ADMIN_PASSWORD,
+    localAdminPassword: localAdminPassword(),
+  });
+  if (problem) throw new Error(problem);
 
   console.log("Yönetici:");
   await ensureUser({

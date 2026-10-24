@@ -153,7 +153,7 @@ Pi ──HTTPS──► POST /api/robot/heartbeat    (every 30 s → "Bağlı" i
    ENV_FILE=.env.production.local npm run db:seed
    ```
 
-   `ENV_FILE` makes the scripts read only that file. Alternatively, copy the Neon connection strings from the Neon dashboard into that file by hand. Never run `--demo` in production, and don't commit `.env*` files (they are git-ignored).
+   `ENV_FILE` makes the scripts read only that file. Alternatively, copy the Neon connection strings from the Neon dashboard into that file by hand. Never run `--demo` in production: the seed script refuses it for any database that isn't on your computer, and there it also requires a new admin password of at least 12 characters. Don't commit `.env*` files (they are git-ignored).
 5. Deploy. Repeat step 4's migrate command whenever you add a migration, before or right after deploying. Later you can automate this in CI.
 
 ### Before going live

@@ -1,0 +1,84 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+!.env.example
+
+# local database (npm run db:local)
+/.data
+
+# raspberry pi client
+/raspberry-pi/.venv
+/raspberry-pi/last-reply.wav
+/raspberry-pi/face-previews/
+__pycache__/
+*.pyc
+
+# python tooling
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# generated audio (robot replies, test recordings)
+*.wav
+*.aiff
+*.aif
+*.mp3
+*.m4a
+
+# database dumps and backups (the migrations in drizzle/ ARE committed)
+*.dump
+*.backup
+*.bak
+*.sql.gz
+/backups/
+
+# keys, logs and temporary files
+*.key
+*.log
+logs/
+*.tmp
+*.swp
+*~
+
+# personal editor settings
+/.vscode/

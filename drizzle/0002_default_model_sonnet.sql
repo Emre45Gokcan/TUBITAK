@@ -1,0 +1,1 @@
+ALTER TABLE "robot" ALTER COLUMN "model" SET DEFAULT 'claude-sonnet-5-5';

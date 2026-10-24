@@ -1,0 +1,7 @@
+# Raspberry Pi OS: also install the system packages listed in README.md (PortAudio, SDL).
+requests>=2.31,<3
+numpy>=1.24
+sounddevice>=0.4.6
+pygame>=2.5
+# gpiozero ships with Raspberry Pi OS; install it only if your image lacks it:
+# gpiozero>=2.0

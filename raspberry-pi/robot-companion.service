@@ -1,0 +1,22 @@
+# systemd unit for the robot client. Install (adjust User/paths if needed):
+#   sudo cp robot-companion.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now robot-companion
+[Unit]
+Description=AI companion robot client
+Wants=network-online.target sound.target
+After=network-online.target sound.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/robot/raspberry-pi
+ExecStart=/home/pi/robot/raspberry-pi/.venv/bin/python main.py
+# Fullscreen on the attached LCD without a desktop session (Raspberry Pi OS Lite).
+Environment=SDL_VIDEODRIVER=kmsdrm
+Environment=PYTHONUNBUFFERED=1
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

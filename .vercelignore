@@ -1,2 +1,16 @@
 # The Raspberry Pi client runs on the device, not on Vercel.
 raspberry-pi/
+
+# Local-only files. `vercel deploy` uploads from disk and does not read .gitignore,
+# so anything private or machine-specific must also be listed here.
+.data/
+.env*
+!.env.example
+.vscode/
+*.tsbuildinfo
+coverage/
+backups/
+*.dump
+*.backup
+*.log
+*.wav
